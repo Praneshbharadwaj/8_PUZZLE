@@ -1,7 +1,22 @@
-window.onload = () => {
+var grid1 = [];
+var tiles = []; // Initialize tiles with an empty array
 
-    var tiles = [2, 3, 1, 4, 5, 6, 7, 8, 0];
+window.onload = () => {
+    $.get("/shuffle", (data) => {
+        tiles = data.flat();
+        steps = 0;
+        renderTiles($('.eight-puzzle'));
+    });
+
     var steps = 0; // Counter variable for steps taken
+
+    $('#shuffleButton').click(() => {
+        $.get("/shuffle", (data) => {
+            tiles = data.flat();
+            steps = 0;
+            renderTiles($('.eight-puzzle'));
+        });
+    });
 
     var $target = undefined;
 
@@ -11,7 +26,7 @@ window.onload = () => {
         for (var i = 0; i < tiles.length; i += 3) {
             grid.push(tiles.slice(i, i + 3));
         }
-        console.log(grid); // Log the updated grid
+        grid1 = grid; // Log the updated grid
     };
 
     var renderTiles = function ($newTarget) {
@@ -38,8 +53,11 @@ window.onload = () => {
 
     var checkSolvable = function () {
         var sum = 0;
-        for (var i = 0; i < tiles.length; i++) {
-            // Your solvability checking logic here
+        // Ensure tiles is not undefined and has a length property
+        if (tiles && tiles.length) {
+            for (var i = 0; i < tiles.length; i++) {
+                // Your solvability checking logic here
+            }
         }
     };
 
@@ -71,3 +89,33 @@ window.onload = () => {
 
     renderTiles($('.eight-puzzle'));
 };
+
+function solvePuzzle() {
+    var puzzle = grid1; // Use grid1 directly
+    var data = { "puzzle": puzzle };
+
+    fetch('/solve', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.steps !== undefined) {
+                document.getElementById("result").innerText = "Number of steps to solve the puzzle: " + data.steps;
+            } else {
+                document.getElementById("result").innerText = "Error solving puzzle.";
+            }
+            if (data.next_step !== undefined) {
+                document.getElementById("next").innerText = "Next step: " + data.next_step;
+            } else {
+                document.getElementById("next").innerText = "Error solving puzzle.";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById("result").innerText = "Error solving puzzle.";
+        });
+}

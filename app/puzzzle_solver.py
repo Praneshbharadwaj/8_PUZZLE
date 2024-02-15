@@ -47,7 +47,6 @@ class PuzzleSolver:
     def next_step(self, puzzle):
         zero_row, zero_col = self.find_zero(puzzle)
         possible_moves = [(0, 1, 'R'), (0, -1, 'L'), (1, 0, 'D'), (-1, 0, 'U')]
-        print(possible_moves[1])
         min_cost = float('inf')
         best_move = ''
 
@@ -74,9 +73,4 @@ class PuzzleSolver:
             new_row, new_col = zero_row + new_row, zero_col + new_col
             if 0 <= new_row < 3 and 0 <= new_col < 3:
                 goal_state[zero_row][zero_col], goal_state[new_row][new_col] = goal_state[new_row][new_col], goal_state[zero_row][zero_col]
-        print(goal_state)
         return goal_state
-
-
-solver = PuzzleSolver()
-solver.shuffle_puzzle()

@@ -20,5 +20,11 @@ def solve_puzzle():
     }
     return render_template('index.html', context=context)
 
+@app.route('/shuffle')
+def shuffle():
+    solver = PuzzleSolver()
+    shuffled_array = solver.shuffle_puzzle()
+    return jsonify(shuffled_array)
+
 if __name__ == '__main__':
     app.run(debug=True)
