@@ -18,7 +18,7 @@ def solve_puzzle():
         'steps': steps,
         'next_step': next_step,
     }
-    return render_template('index.html', context=context)
+    return jsonify(context)
 
 @app.route('/shuffle')
 def shuffle():
