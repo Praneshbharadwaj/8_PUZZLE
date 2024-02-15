@@ -1,7 +1,16 @@
 window.onload = () => {
 
     var tiles = [2, 3, 1, 4, 5, 6, 7, 8, 0];
+
     var steps = 0; // Counter variable for steps taken
+
+    $('#shuffleButton').click(() => {
+        $.get("/shuffle", (data) => {
+            tiles = data.flat();
+            steps = 0;
+            renderTiles($('.eight-puzzle'));
+        });
+    });
 
     var $target = undefined;
 
