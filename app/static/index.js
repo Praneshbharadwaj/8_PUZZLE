@@ -1,5 +1,8 @@
 window.onload = () => {
 
+    // Destination position array
+    const destinationPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+
     $.get("/shuffle", (data) => {
         tiles = data.flat();
         steps = 0;
@@ -9,6 +12,9 @@ window.onload = () => {
     var steps = 0; // Counter variable for steps taken
 
     $('#shuffleButton').click(() => {
+        // Hide the texts "Steps to solve: xx" and "Next step: xx"
+        $('#stepsTaken, #nextStep').hide();
+
         $.get("/shuffle", (data) => {
             tiles = data.flat();
             steps = 0;
@@ -34,16 +40,21 @@ window.onload = () => {
                 console.log('Next step:', response.next_step);
 
                 // Display steps taken
-                $('#stepsTaken').text('Steps to solve: ' + response.steps);
+                $('#stepsTaken').text('Steps to solve: ' + response.steps).show();
 
                 if (response.steps > 0) {
                     // Display next step only if steps are greater than 0
-                    $('#nextStep').text('Next step: ' + response.next_step);
+                    $('#nextStep').text('Next step: ' + response.next_step).show();
                 } else {
                     // Hide next step if steps become 0
                     $('#nextStep').hide();
-                    // Add party poppers to the website
-                    $('body').append('<div id="congratulations"><h1>Congratulations!</h1></div>');
+
+                    // Check if all pieces are in the solved position
+                    var flattenedTiles = tiles.flat();
+                    if (flattenedTiles.every((val, index) => val === destinationPosition[index])) {
+                        // Add party poppers and "Congratulations" text to the website
+                        $('body').append('<div id="overlay"><div id="congratulations"><h1>Congratulations!</h1></div></div>');
+                    }
                 }
             },
             error: function (xhr, status, error) {
@@ -114,6 +125,14 @@ window.onload = () => {
             steps++; // Increment the counter
             renderTiles();
             updateGrid(); // Log the updated grid
+
+            // Check if all pieces are in the correct order
+            var flattenedTiles = tiles.flat();
+            if (flattenedTiles.every((val, index) => val === destinationPosition[index])) {
+                // Add party poppers and "Congratulations" text to the website
+                $('body').append('<div id="overlay"><div id="congratulations"><h1>Congratulations!</h1><img src="https://media4.giphy.com/media/nagxKKFv9vVCj2mB4J/200w.gif?cid=6c09b952pslsc8hg9m0mxi8t0ocpd09k9dqiewu4i2m2zbm0&ep=v1_gifs_search&rid=200w.gif&ct=g" class="img" alt="Full Screen Image"></div></div>');
+
+            }
         }
 
         event.preventDefault();
