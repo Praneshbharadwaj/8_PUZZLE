@@ -2,20 +2,23 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 
 <body>
     <div class="view-screen">
+        <div class="content-container">
+            <p id="stepsTaken"></p>
+            <p id="nextStep"></p>
+            <button id="shuffleButton">Shuffle Puzzle</button>
+            <button id="solveButton">Solve Puzzle</button>
+        </div>
         <div class="eight-puzzle-container">
             <div class="eight-puzzle"></div>
-            <button id="shuffleButton">Shuffle Puzzle</button>
         </div>
-        <button id="shuffleButton"> shuffleButton</button>
-        <button onclick="solvePuzzle()">Solve</button>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="{{ url_for('static', filename='index.js') }}"></script>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 
 </html>

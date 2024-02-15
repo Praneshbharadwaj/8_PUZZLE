@@ -1,7 +1,5 @@
-var grid1 = [];
-var tiles = []; // Initialize tiles with an empty array
-
 window.onload = () => {
+
     $.get("/shuffle", (data) => {
         tiles = data.flat();
         steps = 0;
@@ -24,25 +22,36 @@ window.onload = () => {
         for (var i = 0; i < tiles.length; i += 3) {
             tiles_2d.push(tiles.slice(i, i + 3));
         }
-    
+
         $.ajax({
             url: '/solve',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ puzzle: tiles_2d }), // Send the 2D array
-            success: function(response) {
+            success: function (response) {
                 // Handle successful response from the server
-                console.log('Steps taken to solve:', response.steps);
+                console.log('Steps to solve:', response.steps);
                 console.log('Next step:', response.next_step);
-                // You can do more with the response if needed
+
+                // Display steps taken
+                $('#stepsTaken').text('Steps to solve: ' + response.steps);
+
+                if (response.steps > 0) {
+                    // Display next step only if steps are greater than 0
+                    $('#nextStep').text('Next step: ' + response.next_step);
+                } else {
+                    // Hide next step if steps become 0
+                    $('#nextStep').hide();
+                    // Add party poppers to the website
+                    $('body').append('<div id="congratulations"><h1>Congratulations!</h1></div>');
+                }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 // Handle error response from the server
                 console.error('Error:', error);
             }
         });
     });
-       
 
     var $target = undefined;
 
@@ -52,7 +61,7 @@ window.onload = () => {
         for (var i = 0; i < tiles.length; i += 3) {
             grid.push(tiles.slice(i, i + 3));
         }
-        grid1 = grid; // Log the updated grid
+        console.log(grid); // Log the updated grid
     };
 
     var renderTiles = function ($newTarget) {
@@ -79,11 +88,8 @@ window.onload = () => {
 
     var checkSolvable = function () {
         var sum = 0;
-        // Ensure tiles is not undefined and has a length property
-        if (tiles && tiles.length) {
-            for (var i = 0; i < tiles.length; i++) {
-                // Your solvability checking logic here
-            }
+        for (var i = 0; i < tiles.length; i++) {
+            // Your solvability checking logic here
         }
     };
 
@@ -115,33 +121,3 @@ window.onload = () => {
 
     renderTiles($('.eight-puzzle'));
 };
-
-function solvePuzzle() {
-    var puzzle = grid1; // Use grid1 directly
-    var data = { "puzzle": puzzle };
-
-    fetch('/solve', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.steps !== undefined) {
-                document.getElementById("result").innerText = "Number of steps to solve the puzzle: " + data.steps;
-            } else {
-                document.getElementById("result").innerText = "Error solving puzzle.";
-            }
-            if (data.next_step !== undefined) {
-                document.getElementById("next").innerText = "Next step: " + data.next_step;
-            } else {
-                document.getElementById("next").innerText = "Error solving puzzle.";
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById("result").innerText = "Error solving puzzle.";
-        });
-}

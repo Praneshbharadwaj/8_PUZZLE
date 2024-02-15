@@ -32,13 +32,21 @@ body {
   border: 1px solid #444444;
 }
 
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align text elements to the left */
+  color: #fff;
+  margin-right: 20px; /* Add some margin between text and puzzle */
+}
+
 .eight-puzzle-container {
-  margin-right: 20px; /* Add some spacing between puzzle and counter */
+  color: #fff;
 }
 
 .eight-puzzle {
-  width: 272px; /* 270 + 4 (borders) */
-  height: 272px; /* 270 + 4 (borders) */
+  width: 272px;
+  height: 272px;
   border: 2px solid #444444;
   padding: 5px;
 }
@@ -71,17 +79,56 @@ body {
   color: #00ff00;
 }
 
-.counter-container {
+#stepsTaken,
+#nextStep {
+  font-size: 28px;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: left; /* Align text to the left */
+  color: #ffcc00;
+}
+
+#shuffleButton,
+#solveButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px; /* Add margin between buttons */
+}
+
+#shuffleButton:hover,
+#solveButton:hover {
+  background-color: #45a049;
+}
+.counter {
+  margin-top: 50px;
+  font-size: xx-large;
+}
+/* Add style for the congratulations message */
+#congratulations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://media4.giphy.com/media/nagxKKFv9vVCj2mB4J/200w.gif?cid=6c09b952pslsc8hg9m0mxi8t0ocpd09k9dqiewu4i2m2zbm0&ep=v1_gifs_search&rid=200w.gif&ct=g");
+  background-size: cover;
+  background-position: center;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.counter {
-  font-size: 24px;
-  color: #fff;
-  margin: 0;
-  margin-top: 20px;
-  margin-left: 40px;
+#congratulations h1 {
+  font-size: 72px;
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
